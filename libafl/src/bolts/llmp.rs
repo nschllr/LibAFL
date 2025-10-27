@@ -1978,7 +1978,7 @@ where
             // Crete a new ShMemProvider for this background thread
             let shmem_provider_bg = SP::new().unwrap();
 
-            #[cfg(fature = "llmp_debug")]
+            #[cfg(feature = "llmp_debug")]
             println!("B2b: Spawned proxy thread");
 
             // The background thread blocks on the incoming connection for 15 seconds (if no data is available), then checks if it should forward own messages, then blocks some more.

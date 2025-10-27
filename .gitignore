@@ -1,6 +1,6 @@
 target
 out
-Cargo.lock
+#Cargo.lock
 
 .env
 
