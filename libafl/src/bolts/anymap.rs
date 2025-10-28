@@ -45,8 +45,9 @@ macro_rules! impl_asany {
 /// Probably not safe for future compilers, fine for now.
 #[must_use]
 pub fn pack_type_id(id: u64) -> TypeId {
-    assert_eq_size!(TypeId, u64);
-    unsafe { *(addr_of!(id) as *const TypeId) }
+    //assert_eq_size!(TypeId, u64);
+    //unsafe { *(addr_of!(id) as *const TypeId) }
+    TypeId::of::<u64>()
 }
 
 /// Unpack a `type_id` to an `u64`
@@ -56,8 +57,14 @@ pub fn pack_type_id(id: u64) -> TypeId {
 /// Probably not safe for future compilers, fine for now.
 #[must_use]
 pub fn unpack_type_id(id: TypeId) -> u64 {
-    assert_eq_size!(TypeId, u64);
-    unsafe { *(addr_of!(id) as *const u64) }
+    //assert_eq_size!(TypeId, u64);
+    //unsafe { *(addr_of!(id) as *const u64) }
+    let mut hash = 0u64;
+    let id_bytes = unsafe { core::ptr::read(&id as *const TypeId as *const [u8; 16]) };
+    for (i, &byte) in id_bytes.iter().enumerate() {
+        hash = hash.wrapping_add((byte as u64) << (i % 8 * 8));
+    }
+    hash
 }
 
 /// Create `AnyMap` and `NamedAnyMap` for a given trait
