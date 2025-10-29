@@ -197,9 +197,11 @@ impl CompilerWrapper for ClangWrapper {
             args.push(self.wrapped_cc.clone());
         }
         args.extend_from_slice(self.base_args.as_slice());
-        if !self.passes.is_empty() {
-            args.push("-fno-experimental-new-pass-manager".into());
-        }
+        
+        // due to clang: error: unknown argument ... " (tested clang-14 to clang-17)
+        //if !self.passes.is_empty() {
+        //    args.push("-fno-experimental-new-pass-manager".into());
+        //}
         for pass in &self.passes {
             args.push("-Xclang".into());
             args.push("-load".into());
